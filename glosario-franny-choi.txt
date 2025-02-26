@@ -1,0 +1,47 @@
+from flask import Flask, request, jsonify
+import random
+
+app = Flask(__name__)
+
+def generate_poetic_definition(word):
+    """Genera una definición poética basada en la estructura de Franny Choi."""
+    meanings = [
+        f"{word.capitalize()}: un eco de lo que fue, un reflejo en la niebla.",
+        f"{word.capitalize()} es la herida que el viento susurra en la piel de la memoria.",
+        f"En cada {word}, un universo de sombras que buscan ser luz."
+    ]
+    vease = [
+        f"silencio; sombra; resonancia", 
+        f"fragmento; deseo; ceniza",
+        f"marea; herida; eco"
+    ]
+    origen = [
+        f"Nacido de la grieta entre el sueño y la vigilia.",
+        f"Surgió cuando la noche olvidó su nombre.",
+        f"Se gestó en la intersección del abandono y la espera."
+    ]
+    suenos = [
+        f"Ser el susurro que queda cuando todo se ha dicho.",
+        f"Alcanzar el horizonte y fundirse con la brisa.",
+        f"No ser nada y al mismo tiempo serlo todo."
+    ]
+    
+    return {
+        "significado": random.choice(meanings),
+        "vease": random.choice(vease),
+        "origen": random.choice(origen),
+        "suenos": random.choice(suenos)
+    }
+
+@app.route('/generate-definition', methods=['POST'])
+def generate_definition():
+    data = request.get_json()
+    word = data.get("word", "")
+    if not word:
+        return jsonify({"error": "No se proporcionó ninguna palabra"}), 400
+    
+    definition = generate_poetic_definition(word)
+    return jsonify(definition)
+
+if __name__ == '__main__':
+    app.run(debug=True)
