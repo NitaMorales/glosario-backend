@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Forzar que permita cualquier origen en TODOS los endpoints
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.route("/")
 def home():
@@ -20,6 +24,6 @@ def generate_definition():
         "suenos": "Ser algo más de lo que ya es."
     })
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
 
